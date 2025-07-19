@@ -6,19 +6,23 @@ import { useAuth } from '@/contexts/auth-context';
 
 export default function HomePage() {
   const router = useRouter();
-  const { user, loading } = useAuth();
+  const { user, loading, onboardingCompleted } = useAuth();
 
   useEffect(() => {
     if (!loading) {
       if (user) {
-        // User is authenticated, redirect to dashboard
-        router.push('/dashboard');
+        // User is authenticated, check if onboarding is completed
+        if (onboardingCompleted) {
+          router.push('/dashboard');
+        } else {
+          router.push('/onboarding');
+        }
       } else {
         // User is not authenticated, redirect to sign in
         router.push('/auth/signin');
       }
     }
-  }, [user, loading, router]);
+  }, [user, loading, onboardingCompleted, router]);
 
   // Show loading state while checking authentication
   return (

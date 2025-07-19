@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -19,8 +19,14 @@ export const metadata: Metadata = {
   description: "Advanced network monitoring and management platform with enterprise-grade security. Monitor, analyze, and optimize your network infrastructure with real-time insights.",
   keywords: ["network management", "network monitoring", "enterprise security", "network analytics", "app"],
   authors: [{ name: "Netch Team" }],
-  viewport: "width=device-width, initial-scale=1",
   robots: "noindex, nofollow", // Since this is an app subdomain
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({
