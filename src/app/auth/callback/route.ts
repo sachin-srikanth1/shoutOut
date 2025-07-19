@@ -32,7 +32,11 @@ export async function GET(request: Request) {
       if (data.session) {
         const isLocalhost = origin.includes('localhost') || origin.includes('127.0.0.1')
         const baseUrl = isLocalhost ? origin.replace('https://', 'http://') : origin
-        const redirectUrl = `${baseUrl}${next}`
+        
+        // Check if user has completed onboarding
+        const onboardingCompleted = data.session.user.user_metadata?.onboarding_completed
+        const redirectUrl = onboardingCompleted ? `${baseUrl}${next}` : `${baseUrl}/onboarding`
+        
         return NextResponse.redirect(redirectUrl)
       } else {
         const isLocalhost = origin.includes('localhost') || origin.includes('127.0.0.1')

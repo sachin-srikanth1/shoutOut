@@ -8,12 +8,14 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
+  onboardingCompleted: boolean;
   signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>;
   signUp: (email: string, password: string, userData: { firstName: string; lastName: string }) => Promise<{ error: AuthError | null }>;
   signOut: () => Promise<void>;
   signInWithGoogle: () => Promise<{ error: AuthError | null }>;
   resetPassword: (email: string) => Promise<{ error: AuthError | null }>;
   updatePassword: (password: string) => Promise<{ error: AuthError | null }>;
+  markOnboardingCompleted: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -22,6 +24,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [onboardingCompleted, setOnboardingCompleted] = useState(false);
   const supabase = createClient();
 
   // Helper function to get the correct redirect URL for localhost
@@ -41,6 +44,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
         setSession(session);
         setUser(session?.user ?? null);
+        
+        // Check onboarding completion status
+        if (session?.user) {
+          const onboardingCompleted = session.user.user_metadata?.onboarding_completed || false;
+          setOnboardingCompleted(onboardingCompleted);
+        }
       } catch (error) {
         console.error('Error getting initial session:', error);
       } finally {
@@ -55,6 +64,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       async (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
+        
+        // Check onboarding completion status
+        if (session?.user) {
+          const onboardingCompleted = session.user.user_metadata?.onboarding_completed || false;
+          setOnboardingCompleted(onboardingCompleted);
+        } else {
+          setOnboardingCompleted(false);
+        }
+        
         setLoading(false);
       }
     );
@@ -172,16 +190,37 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const markOnboardingCompleted = async () => {
+    try {
+      // In a real app, you would save this to your database
+      // For now, we'll just update the local state
+      setOnboardingCompleted(true);
+      
+      // You could also update the user metadata
+      const { error } = await supabase.auth.updateUser({
+        data: { onboarding_completed: true }
+      });
+      
+      if (error) {
+        console.error('Error updating onboarding status:', error);
+      }
+    } catch (error) {
+      console.error('Error marking onboarding completed:', error);
+    }
+  };
+
   const value = {
     user,
     session,
     loading,
+    onboardingCompleted,
     signIn,
     signUp,
     signOut,
     signInWithGoogle,
     resetPassword,
     updatePassword,
+    markOnboardingCompleted,
   };
 
   return (
