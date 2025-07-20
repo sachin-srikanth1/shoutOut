@@ -57,11 +57,11 @@ export default function NotificationsSection({ className = "" }: NotificationsSe
         <h3 className="text-sm font-medium text-foreground">Important Notifications</h3>
       </div>
       <div className="space-y-3">
-        {notifications.map((notification) => (
+        {notifications.map((notification, index) => (
           <div 
             key={notification.id} 
             style={{ border: '1px solid rgba(168, 85, 247, 0.3)' }}
-            className="flex items-center gap-3 p-3 rounded-lg bg-card/50 backdrop-blur-sm shadow-sm hover:shadow-md hover:border-purple-500 transition-all duration-200"
+            className={`flex items-center gap-3 p-3 rounded-lg bg-card/50 backdrop-blur-sm shadow-sm hover:shadow-md hover:border-purple-500 transition-all duration-200 ${index === 0 ? 'animate-bounce-subtle' : ''}`}
           >
             <div className={`w-2 h-2 rounded-full ${getNotificationColor(notification.type)} flex-shrink-0`}></div>
             <div className="flex-1 min-w-0">

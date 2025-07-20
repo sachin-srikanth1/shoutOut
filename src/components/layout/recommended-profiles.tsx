@@ -52,11 +52,11 @@ export default function RecommendedProfiles({ className = "" }: RecommendedProfi
         <h3 className="text-sm font-medium text-foreground">Recommended Profiles</h3>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {profiles.map((profile) => (
+        {profiles.map((profile, index) => (
           <div 
             key={profile.id}
             style={{ border: '1px solid rgba(168, 85, 247, 0.3)' }}
-            className="p-4 rounded-lg bg-card/50 backdrop-blur-sm shadow-sm hover:shadow-md hover:border-purple-500 transition-all duration-200"
+            className={`p-4 rounded-lg bg-card/50 backdrop-blur-sm shadow-sm hover:shadow-md hover:border-purple-500 transition-all duration-200 ${index === 0 ? 'animate-bounce-subtle' : ''}`}
           >
             <div className="flex items-start justify-between mb-3">
               <div className="flex-1 min-w-0">

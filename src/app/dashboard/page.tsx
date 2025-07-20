@@ -189,12 +189,19 @@ export default function DashboardPage() {
           from { opacity: 0; transform: translateY(20px); }
           to { opacity: 1; transform: translateY(0); }
         }
+        @keyframes bounce-subtle {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-4px); }
+        }
         .animate-fade-in {
           animation: fade-in 0.6s ease-out;
         }
         .animate-slide-up {
           animation: slide-up 0.6s ease-out forwards;
           opacity: 0;
+        }
+        .animate-bounce-subtle {
+          animation: bounce-subtle 3s ease-in-out infinite;
         }
       `}</style>
       <div className="light">
