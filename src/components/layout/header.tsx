@@ -51,29 +51,19 @@ export default function Header({ className = '' }: HeaderProps) {
         <div className="flex items-center justify-between h-12">
           {/* Logo - Left edge */}
           <div className="flex items-center">
-            <Link href="/dashboard" className="flex items-center space-x-2">
-              <div className="w-6 h-6 bg-gradient-to-br from-primary to-primary/80 rounded-md flex items-center justify-center">
-                <Globe className="h-3 w-3 text-primary-foreground" />
-              </div>
-              <span className="text-base font-semibold text-foreground">Netch</span>
+            <Link href="/dashboard" className="flex items-center space-x-1.5">
+              <img
+                src="/logo.png"
+                alt="Logo"
+                className="w-6 h-6 rounded object-cover"
+              />
+              <span className="text-base font-semibold text-foreground">Netch.ai</span>
             </Link>
           </div>
 
           {/* Right side - Notifications, User, Mobile menu - Right edge */}
           <div className="flex items-center space-x-2 sm:space-x-3">
-            {/* Theme Toggle */}
-            <button
-              onClick={toggleTheme}
-              className="p-1.5 text-foreground hover:text-primary bg-muted/50 hover:bg-muted rounded-md transition-colors"
-              aria-label="Toggle theme"
-            >
-              {theme === 'light' ? (
-                <Moon className="h-4 w-4" />
-              ) : (
-                <Sun className="h-4 w-4" />
-              )}
-            </button>
-
+            
             {/* Notifications */}
             <button className="p-1.5 text-foreground hover:text-primary bg-muted/50 hover:bg-muted rounded-md transition-colors relative">
               <Bell className="h-4 w-4" />

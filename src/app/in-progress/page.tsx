@@ -2,6 +2,7 @@
 
 import DashboardLayout from '@/components/layout/dashboard-layout';
 import { ListChecks } from 'lucide-react';
+// No in-progress logic needed
 
 export default function InProgressPage() {
   return (
@@ -16,7 +17,7 @@ export default function InProgressPage() {
           <p className="text-muted-foreground">Track your ongoing networking and connection activities</p>
         </div>
 
-        {/* Placeholder for in-progress connections */}
+        {/* In-Progress Profiles List */}
         <div className="text-center py-12">
           <ListChecks className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
           <h3 className="text-lg font-medium text-foreground mb-2">No in-progress connections yet</h3>
