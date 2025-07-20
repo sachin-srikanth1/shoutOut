@@ -4,40 +4,70 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/auth-context';
 import DashboardLayout from '@/components/layout/dashboard-layout';
+import SearchBar from '@/components/layout/search-bar';
+import NotificationsSection from '@/components/layout/notifications-section';
+import RecommendedProfiles from '@/components/layout/recommended-profiles';
+import UpcomingMeetings from '@/components/layout/upcoming-meetings';
 import { TrendingUp, Users, BarChart3, Settings, LogOut } from 'lucide-react';
 
+// Typing animation component
+function TypingAnimation({ text, speed = 100 }: { text: string; speed?: number }) {
+  const [displayText, setDisplayText] = useState('');
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isTypingComplete, setIsTypingComplete] = useState(false);
+
+  useEffect(() => {
+    if (currentIndex < text.length) {
+      const timer = setTimeout(() => {
+        setDisplayText(text.slice(0, currentIndex + 1));
+        setCurrentIndex(currentIndex + 1);
+      }, speed);
+
+      return () => clearTimeout(timer);
+    } else {
+      setIsTypingComplete(true);
+    }
+  }, [currentIndex, text, speed]);
+
+  return (
+    <span className={`text-muted-foreground transition-opacity duration-1000 ${isTypingComplete ? 'opacity-100' : 'opacity-70'}`}>
+      {displayText}
+    </span>
+  );
+}
+
 export default function DashboardPage() {
-  const { user, loading, signOut, onboardingCompleted } = useAuth();
+  const { user, signOut } = useAuth();
   const [currentPage, setCurrentPage] = useState('dashboard');
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && user && !onboardingCompleted) {
-      router.push('/onboarding');
-    }
-  }, [user, loading, onboardingCompleted, router]);
+    // if (!loading && user && !onboardingCompleted) {
+    //   router.push('/onboarding');
+    // }
+  }, [router]);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted/10">
-        <div className="text-center space-y-3">
-          <div className="animate-spin rounded-full h-8 w-8 border-2 border-primary/20 border-t-primary mx-auto"></div>
-          <p className="text-sm text-muted-foreground">Loading...</p>
-        </div>
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted/10">
+  //       <div className="text-center space-y-3">
+  //         <div className="animate-spin rounded-full h-8 w-8 border-2 border-primary/20 border-t-primary mx-auto"></div>
+  //         <p className="text-sm text-muted-foreground">Loading...</p>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
-  if (!user) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted/10">
-        <div className="text-center space-y-3">
-          <h1 className="text-xl font-medium text-foreground">Access Denied</h1>
-          <p className="text-sm text-muted-foreground">You need to be authenticated to access this page.</p>
-        </div>
-      </div>
-    );
-  }
+  // if (!user) {
+  //   return (
+  //     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted/10">
+  //       <div className="text-center space-y-3">
+  //         <h1 className="text-xl font-medium text-foreground">Access Denied</h1>
+  //         <p className="text-sm text-muted-foreground">You need to be authenticated to access this page.</p>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   const getDisplayName = () => {
     if (user?.user_metadata?.first_name) {
@@ -49,7 +79,7 @@ export default function DashboardPage() {
     if (user?.user_metadata?.name) {
       return user.user_metadata.name.split(' ')[0];
     }
-    return 'there';
+    return 'User';
   };
 
   const handleSignOut = async () => {
@@ -59,65 +89,33 @@ export default function DashboardPage() {
   const renderDashboard = () => (
     <div className="space-y-12">
       {/* Welcome Section */}
-      <div className="space-y-1">
-        <h1 className="text-2xl font-medium text-foreground">
+      <div className="space-y-1 animate-fade-in">
+        <h1 className="text-2xl font-medium text-foreground bg-gradient-to-r from-foreground via-purple-600 to-foreground bg-clip-text">
           Welcome back, {getDisplayName()}
         </h1>
-        <p className="text-muted-foreground">
-          Here's your overview
+        <p>
+          <TypingAnimation text="Let's get started..." speed={80} />
         </p>
       </div>
 
-      {/* Key Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            <Users className="h-4 w-4 text-muted-foreground" />
-            <span className="text-sm text-muted-foreground">Active Users</span>
-          </div>
-          <p className="text-3xl font-semibold text-foreground">1,234</p>
-          <p className="text-xs text-green-600 dark:text-green-400">+12% from last month</p>
-        </div>
+      {/* Recommended Profiles */}
+      <div className="animate-slide-up">
+        <RecommendedProfiles />
+      </div>
 
-        <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
-            <span className="text-sm text-muted-foreground">Revenue</span>
-          </div>
-          <p className="text-3xl font-semibold text-foreground">$45.2K</p>
-          <p className="text-xs text-blue-600 dark:text-blue-400">+8% from last month</p>
+      {/* Notifications and Meetings */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="animate-slide-up" style={{ animationDelay: '0.1s' }}>
+          <NotificationsSection />
         </div>
-
-        <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            <BarChart3 className="h-4 w-4 text-muted-foreground" />
-            <span className="text-sm text-muted-foreground">Satisfaction</span>
-          </div>
-          <p className="text-3xl font-semibold text-foreground">89%</p>
-          <p className="text-xs text-yellow-600 dark:text-yellow-400">+2% from last week</p>
+        <div className="animate-slide-up" style={{ animationDelay: '0.2s' }}>
+          <UpcomingMeetings />
         </div>
       </div>
 
-      {/* Recent Activity */}
-      <div className="space-y-4">
-        <h3 className="text-sm font-medium text-foreground">Recent Activity</h3>
-        <div className="space-y-3">
-          <div className="flex items-center gap-3 text-sm">
-            <div className="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>
-            <span className="text-foreground">New user registration</span>
-            <span className="text-muted-foreground ml-auto">2m ago</span>
-          </div>
-          <div className="flex items-center gap-3 text-sm">
-            <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
-            <span className="text-foreground">Payment processed</span>
-            <span className="text-muted-foreground ml-auto">15m ago</span>
-          </div>
-          <div className="flex items-center gap-3 text-sm">
-            <div className="w-1.5 h-1.5 bg-yellow-500 rounded-full"></div>
-            <span className="text-foreground">System maintenance</span>
-            <span className="text-muted-foreground ml-auto">1h ago</span>
-          </div>
-        </div>
+      {/* Search Bar */}
+      <div className="pt-8 animate-slide-up" style={{ animationDelay: '0.3s' }}>
+        <SearchBar />
       </div>
     </div>
   );
@@ -125,34 +123,34 @@ export default function DashboardPage() {
   const renderSettings = () => (
     <div className="space-y-8">
       <div className="space-y-1">
-        <h1 className="text-2xl font-medium text-foreground">Settings</h1>
+        <h1 className="text-2xl font-medium text-foreground bg-gradient-to-r from-foreground via-purple-600 to-foreground bg-clip-text">Settings</h1>
         <p className="text-muted-foreground">
           Manage your account
         </p>
       </div>
 
       <div className="space-y-6">
-        <div className="flex items-center justify-between py-3">
+        <div className="flex items-center justify-between py-3 p-4 rounded-lg border border-border/50 bg-card/50 backdrop-blur-sm hover:bg-card/70 transition-all duration-200">
           <div>
             <p className="text-sm font-medium text-foreground">Account</p>
             <p className="text-xs text-muted-foreground">Profile and security</p>
           </div>
-          <button className="text-sm text-primary hover:text-primary/80 transition-colors">
+          <button className="text-sm text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300 transition-colors">
             Edit
           </button>
         </div>
 
-        <div className="flex items-center justify-between py-3">
+        <div className="flex items-center justify-between py-3 p-4 rounded-lg border border-border/50 bg-card/50 backdrop-blur-sm hover:bg-card/70 transition-all duration-200">
           <div>
             <p className="text-sm font-medium text-foreground">Notifications</p>
             <p className="text-xs text-muted-foreground">Alert preferences</p>
           </div>
-          <button className="text-sm text-primary hover:text-primary/80 transition-colors">
+          <button className="text-sm text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300 transition-colors">
             Configure
           </button>
         </div>
 
-        <div className="flex items-center justify-between py-3">
+        <div className="flex items-center justify-between py-3 p-4 rounded-lg border border-border/50 bg-card/50 backdrop-blur-sm hover:bg-card/70 transition-all duration-200">
           <div>
             <p className="text-sm font-medium text-foreground">Sign Out</p>
             <p className="text-xs text-muted-foreground">End session</p>
@@ -182,7 +180,26 @@ export default function DashboardPage() {
 
   return (
     <DashboardLayout>
-      {renderContent()}
+      <style>{`
+        @keyframes fade-in {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes slide-up {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+          animation: fade-in 0.6s ease-out;
+        }
+        .animate-slide-up {
+          animation: slide-up 0.6s ease-out forwards;
+          opacity: 0;
+        }
+      `}</style>
+      <div className="light">
+        {renderContent()}
+      </div>
     </DashboardLayout>
   );
 } 

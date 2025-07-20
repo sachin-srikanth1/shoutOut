@@ -6,7 +6,10 @@ import { usePathname } from 'next/navigation';
 import { 
   LayoutDashboard, 
   BarChart3, 
-  Settings
+  Settings,
+  User,
+  ListChecks,
+  CheckCircle
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -19,16 +22,34 @@ export default function Sidebar({ className = '' }: SidebarProps) {
 
   const navigation = [
     {
-      name: 'Dashboard',
+      name: 'Home',
       href: '/dashboard',
       icon: LayoutDashboard,
       description: 'Overview and metrics'
     },
     {
-      name: 'Analytics',
+      name: 'Recommended',
       href: '/network',
       icon: BarChart3,
-      description: 'Data and insights'
+      description: 'Personalized suggestions'
+    },
+    {
+      name: 'In-Progress',
+      href: '/in-progress',
+      icon: ListChecks,
+      description: 'Connections in progress'
+    },
+    {
+      name: 'Completed',
+      href: '/completed',
+      icon: CheckCircle,
+      description: 'Completed connections'
+    },
+    {
+      name: 'Profile',
+      href: '/profile',
+      icon: User,
+      description: 'Your profile'
     }
   ];
 

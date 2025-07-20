@@ -116,6 +116,14 @@ export default function Header({ className = '' }: HeaderProps) {
                         <Settings className="h-4 w-4" />
                         <span>Settings</span>
                       </Link>
+                      <Link
+                        href="/profile"
+                        className="flex items-center space-x-2 w-full px-3 py-2 text-sm text-foreground hover:text-primary hover:bg-muted/50 rounded-md transition-colors"
+                        onClick={() => setIsUserMenuOpen(false)}
+                      >
+                        <User className="h-4 w-4" />
+                        <span>Profile</span>
+                      </Link>
                       <button
                         onClick={handleSignOut}
                         className="flex items-center space-x-2 w-full px-3 py-2 text-sm text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md transition-colors"
