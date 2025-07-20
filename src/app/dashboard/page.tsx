@@ -30,7 +30,7 @@ function TypingAnimation({ text, speed = 100 }: { text: string; speed?: number }
   }, [currentIndex, text, speed]);
 
   return (
-    <span className={`text-muted-foreground transition-opacity duration-1000 ${isTypingComplete ? 'opacity-100' : 'opacity-70'}`}>
+    <span className={`text-purple-400 transition-opacity duration-1000 ${isTypingComplete ? 'opacity-100' : 'opacity-70'}`}>
       {displayText}
     </span>
   );
