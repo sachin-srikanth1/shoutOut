@@ -9,7 +9,8 @@ import {
   Settings,
   User,
   ListChecks,
-  CheckCircle
+  CheckCircle,
+  Calendar
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -29,7 +30,7 @@ export default function Sidebar({ className = '' }: SidebarProps) {
     },
     {
       name: 'Recommended',
-      href: '/network',
+      href: '/recommended',
       icon: BarChart3,
       description: 'Personalized suggestions'
     },
@@ -44,6 +45,12 @@ export default function Sidebar({ className = '' }: SidebarProps) {
       href: '/completed',
       icon: CheckCircle,
       description: 'Completed connections'
+    },
+    {
+      name: 'Calendar',
+      href: '/calendar',
+      icon: Calendar,
+      description: 'Upcoming meetings'
     },
     {
       name: 'Profile',

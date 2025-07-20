@@ -94,7 +94,7 @@ export default function DashboardPage() {
           Welcome back, {getDisplayName()}
         </h1>
         <p>
-          <TypingAnimation text="Let's get started..." speed={80} />
+          <TypingAnimation text="Let's get started..." speed={30} />
         </p>
       </div>
 

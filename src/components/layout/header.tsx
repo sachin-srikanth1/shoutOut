@@ -163,7 +163,7 @@ export default function Header({ className = '' }: HeaderProps) {
                 Dashboard
               </Link>
               <Link
-                href="/network"
+                href="/recommended"
                 className="block px-3 py-2 text-sm text-foreground hover:text-primary hover:bg-muted/50 rounded-md transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >

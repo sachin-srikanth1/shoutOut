@@ -72,7 +72,7 @@ export default function RecommendedProfiles({ className = "" }: RecommendedProfi
             <div className="flex items-center justify-between text-xs">
               <span className="text-muted-foreground">{profile.mutualConnections} mutual connections</span>
               <Link 
-                href="/network"
+                href="/recommended"
                 className="text-primary hover:text-primary/80 transition-colors font-medium"
               >
                 Connect
