@@ -8,6 +8,7 @@ import SearchBar from '@/components/layout/search-bar';
 import NotificationsSection from '@/components/layout/notifications-section';
 import RecommendedProfiles from '@/components/layout/recommended-profiles';
 import UpcomingMeetings from '@/components/layout/upcoming-meetings';
+import DatabaseStatus from '@/components/database-status';
 import { TrendingUp, Users, BarChart3, Settings, LogOut } from 'lucide-react';
 
 // Typing animation component
@@ -116,6 +117,11 @@ export default function DashboardPage() {
       {/* Search Bar */}
       <div className="pt-8 animate-slide-up" style={{ animationDelay: '0.3s' }}>
         <SearchBar />
+      </div>
+
+      {/* Database Status Check */}
+      <div className="pt-8 animate-slide-up" style={{ animationDelay: '0.4s' }}>
+        <DatabaseStatus />
       </div>
     </div>
   );

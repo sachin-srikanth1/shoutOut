@@ -9,8 +9,11 @@ export async function GET(request: Request) {
   
   const next = searchParams.get('next') ?? '/'
 
+  console.log('OAuth callback received:', { code: !!code, error, errorDescription })
+
   // Handle OAuth errors
   if (error) {
+    console.error('OAuth error:', error, errorDescription)
     const isLocalhost = origin.includes('localhost') || origin.includes('127.0.0.1')
     const baseUrl = isLocalhost ? origin.replace('https://', 'http://') : origin
     const redirectUrl = `${baseUrl}/auth/auth-code-error?error=${error}&description=${errorDescription}`
@@ -19,15 +22,23 @@ export async function GET(request: Request) {
 
   if (code) {
     try {
+      console.log('Exchanging code for session...')
       const supabase = await createClient()
       const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
       
       if (exchangeError) {
+        console.error('Exchange error:', exchangeError)
         const isLocalhost = origin.includes('localhost') || origin.includes('127.0.0.1')
         const baseUrl = isLocalhost ? origin.replace('https://', 'http://') : origin
         const redirectUrl = `${baseUrl}/auth/auth-code-error?error=exchange_failed&description=${exchangeError.message}`
         return NextResponse.redirect(redirectUrl)
       }
+      
+      console.log('Exchange successful:', { 
+        hasSession: !!data.session, 
+        hasUser: !!data.session?.user,
+        userEmail: data.session?.user?.email 
+      })
       
       if (data.session) {
         const isLocalhost = origin.includes('localhost') || origin.includes('127.0.0.1')
@@ -37,14 +48,17 @@ export async function GET(request: Request) {
         const onboardingCompleted = data.session.user.user_metadata?.onboarding_completed
         const redirectUrl = onboardingCompleted ? `${baseUrl}${next}` : `${baseUrl}/onboarding`
         
+        console.log('Redirecting to:', redirectUrl)
         return NextResponse.redirect(redirectUrl)
       } else {
+        console.error('No session returned from exchange')
         const isLocalhost = origin.includes('localhost') || origin.includes('127.0.0.1')
         const baseUrl = isLocalhost ? origin.replace('https://', 'http://') : origin
         const redirectUrl = `${baseUrl}/auth/auth-code-error?error=no_session&description=No session returned from OAuth exchange`
         return NextResponse.redirect(redirectUrl)
       }
     } catch (err) {
+      console.error('Unexpected error:', err)
       const isLocalhost = origin.includes('localhost') || origin.includes('127.0.0.1')
       const baseUrl = isLocalhost ? origin.replace('https://', 'http://') : origin
       const redirectUrl = `${baseUrl}/auth/auth-code-error?error=unexpected&description=${err instanceof Error ? err.message : 'Unknown error'}`

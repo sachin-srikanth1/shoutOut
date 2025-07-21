@@ -119,13 +119,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setSession(session);
           setUser(session?.user ?? null);
           setError(null);
-          
-          // Ensure user profile exists for new users
-          if (session?.user && (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED')) {
-            console.log('Ensuring user profile exists for:', session.user.email);
-            await ensureUserProfile(session.user);
-          }
-          
           setLoading(false);
         }
       );
@@ -205,11 +198,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
           if (profileError) {
             console.warn('Failed to create user profile:', profileError);
-            // Don't fail the signup if profile creation fails
           }
         } catch (profileError) {
           console.warn('Error creating user profile:', profileError);
-          // Don't fail the signup if profile creation fails
         }
       }
 
@@ -264,37 +255,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const errorMessage = error instanceof Error ? error.message : 'Google sign in failed';
       setError(errorMessage);
       return { error: error as AuthError };
-    }
-  };
-
-  // Function to ensure user profile exists (called after OAuth signin)
-  const ensureUserProfile = async (user: User) => {
-    try {
-      // Check if profile exists
-      const { data: existingProfile } = await supabase
-        .from('user_profiles')
-        .select('id')
-        .eq('id', user.id)
-        .single();
-
-      if (!existingProfile) {
-        // Create profile if it doesn't exist
-        const { error: profileError } = await supabase
-          .from('user_profiles')
-          .insert({
-            id: user.id,
-            email: user.email,
-            first_name: user.user_metadata?.first_name || user.user_metadata?.name?.split(' ')[0] || '',
-            last_name: user.user_metadata?.last_name || user.user_metadata?.name?.split(' ').slice(1).join(' ') || '',
-            full_name: user.user_metadata?.full_name || user.user_metadata?.name || user.email,
-          });
-
-        if (profileError) {
-          console.warn('Failed to create user profile:', profileError);
-        }
-      }
-    } catch (error) {
-      console.warn('Error ensuring user profile:', error);
     }
   };
 

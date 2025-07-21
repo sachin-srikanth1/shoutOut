@@ -45,8 +45,8 @@ export async function middleware(request: NextRequest) {
   }
 
   // If there's a user and they're trying to access auth pages,
-  // redirect them to the dashboard
-  if (user && (request.nextUrl.pathname.startsWith('/auth'))) {
+  // redirect them to the dashboard (but allow callback)
+  if (user && (request.nextUrl.pathname.startsWith('/auth') && !request.nextUrl.pathname.startsWith('/auth/callback'))) {
     const redirectUrl = request.nextUrl.clone()
     redirectUrl.pathname = '/dashboard'
     return NextResponse.redirect(redirectUrl)
