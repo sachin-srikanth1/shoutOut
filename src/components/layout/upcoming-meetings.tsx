@@ -57,11 +57,11 @@ export default function UpcomingMeetings({ className = "" }: UpcomingMeetingsPro
         <h3 className="text-sm font-medium text-foreground">Upcoming Meetings</h3>
       </div>
       <div className="space-y-3">
-        {meetings.map((meeting, index) => (
+        {meetings.map((meeting) => (
           <div 
             key={meeting.id} 
             style={{ border: '1px solid rgba(168, 85, 247, 0.3)' }}
-            className={`flex items-center gap-3 p-3 rounded-lg bg-card/50 backdrop-blur-sm shadow-sm hover:shadow-md hover:border-purple-500 transition-all duration-200 ${index === 0 ? 'animate-bounce-subtle' : ''}`}
+            className="flex items-center gap-3 p-3 rounded-lg bg-card/50 backdrop-blur-sm shadow-sm hover:shadow-md hover:border-purple-500 transition-all duration-200"
           >
             <div className={`w-2 h-2 rounded-full ${getMeetingColor(meeting.type)} flex-shrink-0`}></div>
             <div className="flex-1 min-w-0">
