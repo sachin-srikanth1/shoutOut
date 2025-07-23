@@ -3,6 +3,7 @@
 import { ReactNode, useState } from 'react';
 import Header from './header';
 import Sidebar from './sidebar';
+import Footer from './footer';
 import { Menu, X } from 'lucide-react';
 
 interface DashboardLayoutProps {
@@ -88,6 +89,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           </div>
         </main>
       </div>
+      
+      <Footer />
       
       {/* Mobile sidebar toggle button - floating */}
       <button
