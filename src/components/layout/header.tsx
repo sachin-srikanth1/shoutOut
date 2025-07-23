@@ -26,6 +26,7 @@ export default function Header({ className = '' }: HeaderProps) {
   const { theme, toggleTheme } = useTheme();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
 
   const getDisplayName = () => {
     if (user?.user_metadata?.first_name) {
@@ -65,10 +66,55 @@ export default function Header({ className = '' }: HeaderProps) {
           <div className="flex items-center space-x-2 sm:space-x-3">
             
             {/* Notifications */}
-            <button className="p-1.5 text-foreground hover:text-primary bg-muted/50 hover:bg-muted rounded-md transition-colors relative">
-              <Bell className="h-4 w-4" />
-              <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></div>
-            </button>
+            <div className="relative">
+              <button 
+                onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
+                className="p-1.5 text-foreground hover:text-primary bg-muted/50 hover:bg-muted rounded-md transition-colors relative"
+              >
+                <Bell className="h-4 w-4" />
+                <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></div>
+              </button>
+
+              {/* Notifications Dropdown */}
+              {isNotificationsOpen && (
+                <>
+                  <div 
+                    className="fixed inset-0 z-[9999]" 
+                    onClick={() => setIsNotificationsOpen(false)}
+                  />
+                  <div className="absolute right-0 mt-2 w-80 bg-card border border-border/50 rounded-xl shadow-xl z-[10000] transform transition-all duration-300 ease-out animate-in slide-in-from-top-2">
+                    <div className="p-4 border-b border-border/30">
+                      <h3 className="text-sm font-semibold text-foreground">Notifications</h3>
+                    </div>
+                    <div className="max-h-64 overflow-y-auto">
+                      <div className="p-4 border-b border-border/20 hover:bg-muted/20 transition-all duration-200 ease-out cursor-pointer group">
+                        <div className="flex items-start space-x-3">
+                          <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0"></div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm text-foreground group-hover:text-purple-600 transition-colors duration-200">Placeholder</p>
+                            <p className="text-xs text-muted-foreground mt-1">Just now</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="p-4 border-b border-border/20 hover:bg-muted/20 transition-all duration-200 ease-out cursor-pointer group">
+                        <div className="flex items-start space-x-3">
+                          <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0"></div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm text-foreground group-hover:text-purple-600 transition-colors duration-200">Placeholder</p>
+                            <p className="text-xs text-muted-foreground mt-1">2 minutes ago</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="p-4 border-t border-border/30">
+                      <button className="w-full text-xs text-purple-600 hover:text-purple-700 font-medium transition-colors duration-200 hover:bg-purple-50 dark:hover:bg-purple-900/10 rounded-md py-2">
+                        View all notifications
+                      </button>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
 
             {/* User Menu */}
             <div className="relative">
@@ -89,10 +135,10 @@ export default function Header({ className = '' }: HeaderProps) {
               {isUserMenuOpen && (
                 <>
                   <div 
-                    className="fixed inset-0 z-10" 
+                    className="fixed inset-0 z-[9999]" 
                     onClick={() => setIsUserMenuOpen(false)}
                   />
-                  <div className="absolute right-0 mt-2 w-48 bg-card border border-border/50 rounded-lg shadow-lg z-20">
+                  <div className="absolute right-0 mt-2 w-48 bg-card border border-border/50 rounded-lg shadow-lg z-[10000]">
                     <div className="p-3 border-b border-border/50">
                       <p className="text-sm font-medium text-foreground">{getDisplayName()}</p>
                       <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
