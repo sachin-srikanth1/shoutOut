@@ -14,10 +14,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-muted/5">
+    <div className="min-h-screen bg-gradient-to-br from-background to-muted/5 flex flex-col">
       <Header />
       
-      <div className="flex">
+      <div className="flex flex-1">
         {/* Desktop Sidebar */}
         <Sidebar className="hidden lg:block" />
         
@@ -90,7 +90,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         </main>
       </div>
       
-      <Footer />
+      <Footer className="mt-auto" />
       
       {/* Mobile sidebar toggle button - floating */}
       <button

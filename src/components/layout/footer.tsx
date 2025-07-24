@@ -9,9 +9,9 @@ interface FooterProps {
 
 export default function Footer({ className = '' }: FooterProps) {
   return (
-    <footer className={`bg-background/80 backdrop-blur-sm border-t border-border/50 ${className}`}>
+    <footer className={`bg-background/80 backdrop-blur-sm border-t border-border/50 mt-auto ${className}`}>
       <div className="w-full px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-12">
+        <div className="flex items-center justify-between h-10">
           {/* Logo - Left edge */}
           <div className="flex items-center">
             <Link href="/dashboard" className="flex items-center space-x-1.5">
@@ -68,7 +68,7 @@ export default function Footer({ className = '' }: FooterProps) {
         </div>
 
         {/* Mobile Navigation */}
-        <div className="sm:hidden border-t border-border/50 py-3">
+        <div className="sm:hidden border-t border-border/50 py-2">
           <nav className="flex items-center justify-center space-x-6">
             <Link
               href="/legal"
