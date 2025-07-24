@@ -1,6 +1,7 @@
 'use client';
 
 import DashboardLayout from '@/components/layout/dashboard-layout';
+import Link from 'next/link';
 
 export default function LegalPage() {
   return (
@@ -14,7 +15,11 @@ export default function LegalPage() {
         <div className="space-y-8">
           {/* Privacy Policy */}
           <div className="bg-card/50 rounded-xl p-6 border border-purple-100">
-            <h2 className="text-2xl font-semibold text-foreground mb-4">Privacy Policy</h2>
+            <h2 className="text-2xl font-semibold text-foreground mb-4">
+              <Link href="/privacy" className="hover:underline text-foreground">
+                Privacy Policy
+              </Link>
+            </h2>
             <div className="space-y-4 text-muted-foreground">
               <p>
                 At Netch.ai, we are committed to protecting your privacy. This Privacy Policy explains how we collect, 
@@ -33,7 +38,11 @@ export default function LegalPage() {
 
           {/* Terms of Service */}
           <div className="bg-card/50 rounded-xl p-6 border border-purple-100">
-            <h2 className="text-2xl font-semibold text-foreground mb-4">Terms of Service</h2>
+            <h2 className="text-2xl font-semibold text-foreground mb-4">
+              <Link href="/terms" className="hover:underline text-foreground">
+                Terms of Service
+              </Link>
+            </h2>
             <div className="space-y-4 text-muted-foreground">
               <p>
                 By using Netch.ai, you agree to these Terms of Service. Our platform is designed to facilitate professional 
