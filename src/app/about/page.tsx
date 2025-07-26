@@ -1,14 +1,17 @@
 'use client';
 
 import DashboardLayout from '@/components/layout/dashboard-layout';
+import TypingAnimation from '@/components/typing-animation';
 
 export default function AboutPage() {
   return (
     <DashboardLayout>
       <div className="max-w-4xl mx-auto py-8 space-y-8">
         <div className="space-y-2">
-          <h1 className="text-3xl font-bold text-foreground">About Us</h1>
-          <p className="text-muted-foreground">Learn more about Netch.ai and our mission.</p>
+          <h1 className="text-2xl font-medium text-foreground">About Us</h1>
+          <p className="text-muted-foreground">
+            <TypingAnimation text="Learn more about Netch.ai and our mission..." speed={30} />
+          </p>
         </div>
 
         <div className="space-y-8">

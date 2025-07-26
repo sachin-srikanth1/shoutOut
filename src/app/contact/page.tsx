@@ -92,7 +92,7 @@ export default function ContactPage() {
     <DashboardLayout>
       <div className="max-w-4xl mx-auto py-8 space-y-8">
         <div className="space-y-2">
-          <h1 className="text-3xl font-bold text-foreground">Contact Us</h1>
+          <h1 className="text-2xl font-medium text-foreground">Contact Us</h1>
           <p className="text-muted-foreground">
             <TypingAnimation text="Get in touch with our team..." speed={70} />
           </p>

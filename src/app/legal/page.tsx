@@ -1,26 +1,29 @@
 'use client';
 
 import DashboardLayout from '@/components/layout/dashboard-layout';
+import TypingAnimation from '@/components/typing-animation';
 import Link from 'next/link';
 
 export default function LegalPage() {
   return (
     <DashboardLayout>
-      <div className="max-w-4xl mx-auto py-8 space-y-8">
-        <div className="space-y-2">
-          <h1 className="text-3xl font-bold text-foreground">Legal</h1>
-          <p className="text-muted-foreground">Our legal policies and terms of service.</p>
+      <div className="max-w-4xl mx-auto py-6 space-y-6">
+        <div className="space-y-1">
+          <h1 className="text-2xl font-medium text-foreground">Legal</h1>
+          <p className="text-muted-foreground">
+            <TypingAnimation text="Our legal policies and terms of service..." speed={30} />
+          </p>
         </div>
 
-        <div className="space-y-8">
+        <div className="space-y-6">
           {/* Privacy Policy */}
-          <div className="bg-card/50 rounded-xl p-6 border border-purple-100">
-            <h2 className="text-2xl font-semibold text-foreground mb-4">
+          <div className="bg-card/50 rounded-xl p-4 border border-purple-100">
+            <h2 className="text-xl font-semibold text-foreground mb-3">
               <Link href="/privacy" className="hover:underline text-foreground">
                 Privacy Policy
               </Link>
             </h2>
-            <div className="space-y-4 text-muted-foreground">
+            <div className="space-y-3 text-muted-foreground">
               <p>
                 At Netch.ai, we are committed to protecting your privacy. This Privacy Policy explains how we collect, 
                 use, and safeguard your personal information when you use our networking platform.
@@ -37,13 +40,13 @@ export default function LegalPage() {
           </div>
 
           {/* Terms of Service */}
-          <div className="bg-card/50 rounded-xl p-6 border border-purple-100">
-            <h2 className="text-2xl font-semibold text-foreground mb-4">
+          <div className="bg-card/50 rounded-xl p-4 border border-purple-100">
+            <h2 className="text-xl font-semibold text-foreground mb-3">
               <Link href="/terms" className="hover:underline text-foreground">
                 Terms of Service
               </Link>
             </h2>
-            <div className="space-y-4 text-muted-foreground">
+            <div className="space-y-3 text-muted-foreground">
               <p>
                 By using Netch.ai, you agree to these Terms of Service. Our platform is designed to facilitate professional 
                 networking and connections in a respectful and productive environment.
@@ -58,35 +61,7 @@ export default function LegalPage() {
             </div>
           </div>
 
-          {/* Cookie Policy */}
-          <div className="bg-card/50 rounded-xl p-6 border border-purple-100">
-            <h2 className="text-2xl font-semibold text-foreground mb-4">Cookie Policy</h2>
-            <div className="space-y-4 text-muted-foreground">
-              <p>
-                We use cookies and similar technologies to enhance your experience on Netch.ai. These technologies help us 
-                remember your preferences, analyze site usage, and provide personalized content.
-              </p>
-              <p>
-                You can control cookie settings through your browser preferences. However, disabling certain cookies may 
-                affect the functionality of our platform.
-              </p>
-            </div>
-          </div>
 
-          {/* Data Protection */}
-          <div className="bg-card/50 rounded-xl p-6 border border-purple-100">
-            <h2 className="text-2xl font-semibold text-foreground mb-4">Data Protection</h2>
-            <div className="space-y-4 text-muted-foreground">
-              <p>
-                We implement appropriate security measures to protect your personal information against unauthorized access, 
-                alteration, disclosure, or destruction.
-              </p>
-              <p>
-                You have the right to access, correct, or delete your personal information. You can also request a copy 
-                of your data or withdraw consent for data processing at any time.
-              </p>
-            </div>
-          </div>
         </div>
       </div>
     </DashboardLayout>
