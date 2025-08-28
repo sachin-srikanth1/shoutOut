@@ -98,14 +98,27 @@ export default function AnalyticsPage() {
                 <span className="font-medium">{mockData.thisWeek} shoutouts</span>
               </div>
               <div className="flex items-end gap-1 h-32">
-                {mockData.weeklyTrend.map((value, index) => (
-                  <div key={index} className="flex-1 bg-primary/20 rounded-t">
-                    <div 
-                      className="bg-primary rounded-t transition-all duration-300"
-                      style={{ height: `${(value / Math.max(...mockData.weeklyTrend)) * 100}%` }}
-                    ></div>
-                  </div>
-                ))}
+                {mockData.weeklyTrend.map((value, index) => {
+                  const maxValue = Math.max(...mockData.weeklyTrend);
+                  const heightPercentage = maxValue > 0 ? (value / maxValue) * 100 : 0;
+                  const minHeight = 4; // Minimum height in pixels
+                  const actualHeight = Math.max(heightPercentage, minHeight);
+                  
+                  return (
+                    <div key={index} className="flex-1 flex flex-col items-center">
+                      <div className="w-full bg-muted/30 rounded-t relative">
+                        <div 
+                          className="bg-primary rounded-t transition-all duration-300 w-full"
+                          style={{ 
+                            height: `${actualHeight}%`,
+                            minHeight: `${minHeight}px`
+                          }}
+                        ></div>
+                      </div>
+                      <span className="text-xs text-muted-foreground mt-1">{value}</span>
+                    </div>
+                  );
+                })}
               </div>
               <div className="flex justify-between text-xs text-muted-foreground">
                 <span>Mon</span>

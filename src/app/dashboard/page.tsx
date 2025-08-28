@@ -75,18 +75,18 @@ export default function DashboardPage() {
         <div className="p-6 border border-border/50 rounded-lg bg-card/50 backdrop-blur-sm hover:bg-card/70 transition-all duration-200">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center">
-              <span className="text-blue-500 text-lg">📊</span>
+              <span className="text-blue-500 text-lg">💬</span>
             </div>
-            <h3 className="text-lg font-semibold text-foreground">View Analytics</h3>
+            <h3 className="text-lg font-semibold text-foreground">View My Shoutouts</h3>
           </div>
           <p className="text-sm text-muted-foreground mb-4">
-            See recognition trends and insights
+            See your sent and received recognition
           </p>
           <button 
-            onClick={() => window.location.href = '/analytics'}
+            onClick={() => window.location.href = '/my-shoutout'}
             className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-colors"
           >
-            View Insights
+            View Shoutouts
           </button>
         </div>
 

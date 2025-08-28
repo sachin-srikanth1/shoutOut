@@ -13,6 +13,7 @@ export default function SendShoutOutPage() {
     recipientEmail: defaultRecipient,
     recipientName: '',
     message: '',
+    category: 'Teamwork',
     useAIPolish: false,
     includeManager: true
   });
@@ -23,6 +24,23 @@ export default function SendShoutOutPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    
+    // Create the shoutout object
+    const shoutout = {
+      id: Date.now().toString(),
+      type: 'sent' as const,
+      recipient: formData.recipientName || formData.recipientEmail,
+      message: formData.useAIPolish ? getAIPolishPreview().replace('AI Polished: "', '').replace('"', '') : formData.message,
+      category: formData.category,
+      date: new Date().toISOString(),
+      isPublic: true
+    };
+
+    // Save to localStorage
+    const existingShoutouts = localStorage.getItem('shoutouts');
+    const shoutouts = existingShoutouts ? JSON.parse(existingShoutouts) : [];
+    shoutouts.push(shoutout);
+    localStorage.setItem('shoutouts', JSON.stringify(shoutouts));
     
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 2000));
@@ -158,6 +176,33 @@ export default function SendShoutOutPage() {
               <p className="text-xs text-muted-foreground mt-1">
                 {formData.message.length}/500 characters
               </p>
+            </div>
+          </div>
+
+          {/* Category Selection */}
+          <div className="space-y-4">
+            <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
+              <Sparkles className="h-5 w-5" />
+              Recognition Category
+            </h2>
+            
+            <div>
+              <label htmlFor="category" className="block text-sm font-medium text-foreground mb-2">
+                What category best describes this recognition? *
+              </label>
+              <select
+                id="category"
+                value={formData.category}
+                onChange={(e) => handleInputChange('category', e.target.value)}
+                required
+                className="w-full px-4 py-3 border border-border/50 rounded-lg bg-card/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+              >
+                <option value="Teamwork">Teamwork</option>
+                <option value="Innovation">Innovation</option>
+                <option value="Leadership">Leadership</option>
+                <option value="Customer Focus">Customer Focus</option>
+                <option value="Excellence">Excellence</option>
+              </select>
             </div>
           </div>
 

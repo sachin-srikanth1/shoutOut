@@ -36,7 +36,7 @@ export default function Sidebar({ className = '' }: SidebarProps) {
     },
     {
       name: 'My ShoutOuts',
-      href: '/my-shoutouts',
+      href: '/my-shoutout',
       icon: MessageSquare,
       description: 'Sent and received'
     },
@@ -46,12 +46,7 @@ export default function Sidebar({ className = '' }: SidebarProps) {
       icon: BarChart3,
       description: 'Team recognition activity'
     },
-    {
-      name: 'Analytics',
-      href: '/analytics',
-      icon: CheckCircle,
-      description: 'Recognition insights'
-    },
+
     {
       name: 'Profile',
       href: '/profile',

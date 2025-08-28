@@ -1,58 +1,45 @@
 'use client';
 
-import { Bell } from 'lucide-react';
+import { Bell, Send, Heart } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 interface NotificationsSectionProps {
   className?: string;
 }
 
-// Mock data for recognition notifications
-const mockNotifications = [
-  {
-    id: '1',
-    title: 'ShoutOut Received',
-    message: 'Sarah Johnson recognized you for your excellent presentation skills',
-    type: { slug: 'recognition_received' },
-    is_read: false,
-    created_at: new Date(Date.now() - 30 * 60 * 1000).toISOString() // 30 minutes ago
-  },
-  {
-    id: '2',
-    title: 'ShoutOut Sent',
-    message: 'You recognized Mike Chen for his teamwork on the project',
-    type: { slug: 'recognition_sent' },
-    is_read: false,
-    created_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString() // 2 hours ago
-  },
-  {
-    id: '3',
-    title: 'Team Recognition',
-    message: 'Emily Rodriguez was recognized by 3 team members this week',
-    type: { slug: 'team_recognition' },
-    is_read: true,
-    created_at: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString() // 1 day ago
-  },
-  {
-    id: '4',
-    title: 'Weekly Summary',
-    message: 'Your team sent 12 shoutouts this week - great engagement!',
-    type: { slug: 'weekly_summary' },
-    is_read: true,
-    created_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString() // 2 days ago
-  }
-];
+interface Shoutout {
+  id: string;
+  type: 'sent' | 'received';
+  recipient?: string;
+  sender?: string;
+  message: string;
+  category: string;
+  date: string;
+  isPublic: boolean;
+}
 
 export default function NotificationsSection({ className = "" }: NotificationsSectionProps) {
-  const getNotificationColor = (typeSlug: string) => {
-    switch (typeSlug) {
-      case 'recognition_received':
+  const [shoutouts, setShoutouts] = useState<Shoutout[]>([]);
+
+  // Load shoutouts from localStorage on component mount
+  useEffect(() => {
+    const savedShoutouts = localStorage.getItem('shoutouts');
+    if (savedShoutouts) {
+      setShoutouts(JSON.parse(savedShoutouts));
+    }
+  }, []);
+
+  // Get the 5 most recent shoutouts
+  const recentShoutouts = shoutouts
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, 5);
+
+  const getNotificationColor = (type: 'sent' | 'received') => {
+    switch (type) {
+      case 'received':
         return 'bg-green-500';
-      case 'recognition_sent':
+      case 'sent':
         return 'bg-blue-500';
-      case 'team_recognition':
-        return 'bg-purple-500';
-      case 'weekly_summary':
-        return 'bg-orange-500';
       default:
         return 'bg-muted-foreground';
     }
@@ -80,20 +67,44 @@ export default function NotificationsSection({ className = "" }: NotificationsSe
         <h3 className="text-sm font-medium text-foreground">Recognition Activity</h3>
       </div>
       <div className="space-y-3">
-        {mockNotifications.map((notification) => (
-          <div 
-            key={notification.id} 
-            style={{ border: '1px solid rgba(168, 85, 247, 0.3)' }}
-            className={`flex items-center gap-3 p-3 rounded-lg bg-card/50 backdrop-blur-sm shadow-sm hover:shadow-md hover:border-purple-500 transition-all duration-200 ${!notification.is_read ? 'border-l-4 border-l-primary' : ''}`}
-          >
-            <div className={`w-2 h-2 rounded-full ${getNotificationColor(notification.type?.slug || 'default')} flex-shrink-0`}></div>
-            <div className="flex-1 min-w-0">
-              <span className="text-sm font-medium text-foreground">{notification.title}</span>
-              <p className="text-xs text-muted-foreground truncate">{notification.message}</p>
+        {recentShoutouts.length === 0 ? (
+          <div className="text-center py-8">
+            <div className="w-12 h-12 bg-muted/30 rounded-full flex items-center justify-center mx-auto mb-3">
+              <Bell className="h-6 w-6 text-muted-foreground" />
             </div>
-            <span className="text-xs text-muted-foreground flex-shrink-0">{formatTimeAgo(notification.created_at)}</span>
+            <p className="text-sm text-muted-foreground">No recent shoutouts yet</p>
+            <p className="text-xs text-muted-foreground">Send your first shoutout to see it here!</p>
           </div>
-        ))}
+        ) : (
+          recentShoutouts.map((shoutout) => (
+            <div 
+              key={shoutout.id} 
+              style={{ border: '1px solid rgba(168, 85, 247, 0.3)' }}
+              className="flex items-center gap-3 p-3 rounded-lg bg-card/50 backdrop-blur-sm shadow-sm hover:shadow-md hover:border-purple-500 transition-all duration-200"
+            >
+              <div className={`w-2 h-2 rounded-full ${getNotificationColor(shoutout.type)} flex-shrink-0`}></div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                  {shoutout.type === 'sent' ? (
+                    <Send className="h-3 w-3 text-blue-500" />
+                  ) : (
+                    <Heart className="h-3 w-3 text-green-500" />
+                  )}
+                  <span className="text-sm font-medium text-foreground">
+                    {shoutout.type === 'sent' ? 'Sent to' : 'Received from'} {shoutout.type === 'sent' ? shoutout.recipient : shoutout.sender}
+                  </span>
+                </div>
+                <p className="text-xs text-muted-foreground truncate">{shoutout.message}</p>
+                <div className="flex items-center gap-2 mt-1">
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary`}>
+                    {shoutout.category}
+                  </span>
+                </div>
+              </div>
+              <span className="text-xs text-muted-foreground flex-shrink-0">{formatTimeAgo(shoutout.date)}</span>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );
