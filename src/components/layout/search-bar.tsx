@@ -13,10 +13,10 @@ export default function SearchBar({
   className = ""
 }: SearchBarProps) {
   const searchTexts = [
-    "Search for your in-progress connections...",
-    "Search for your upcoming meetings...",
-    "Search for your recommended profiles...",
-    "Search your notifications..."
+    "Search for colleagues to recognize...",
+    "Search for recognition messages...",
+    "Search for team recognition activity...",
+    "Search your shoutout history..."
   ];
   
   const [displayPlaceholder, setDisplayPlaceholder] = useState('');

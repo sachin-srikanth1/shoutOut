@@ -1,15 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/contexts/auth-context';
 import DashboardLayout from '@/components/layout/dashboard-layout';
 import SearchBar from '@/components/layout/search-bar';
 import NotificationsSection from '@/components/layout/notifications-section';
-import RecommendedProfiles from '@/components/layout/recommended-profiles';
+
 import UpcomingMeetings from '@/components/layout/upcoming-meetings';
-import DatabaseStatus from '@/components/database-status';
-import { TrendingUp, Users, BarChart3, Settings, LogOut } from 'lucide-react';
 
 // Typing animation component
 function TypingAnimation({ text, speed = 100 }: { text: string; speed?: number }) {
@@ -38,53 +34,10 @@ function TypingAnimation({ text, speed = 100 }: { text: string; speed?: number }
 }
 
 export default function DashboardPage() {
-  const { user, signOut } = useAuth();
   const [currentPage, setCurrentPage] = useState('dashboard');
-  const router = useRouter();
-
-  useEffect(() => {
-    // if (!loading && user && !onboardingCompleted) {
-    //   router.push('/onboarding');
-    // }
-  }, [router]);
-
-  // if (loading) {
-  //   return (
-  //     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted/10">
-  //       <div className="text-center space-y-3">
-  //         <div className="animate-spin rounded-full h-8 w-8 border-2 border-primary/20 border-t-primary mx-auto"></div>
-  //         <p className="text-sm text-muted-foreground">Loading...</p>
-  //       </div>
-  //     </div>
-  //   );
-  // }
-
-  // if (!user) {
-  //   return (
-  //     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted/10">
-  //       <div className="text-center space-y-3">
-  //         <h1 className="text-xl font-medium text-foreground">Access Denied</h1>
-  //         <p className="text-sm text-muted-foreground">You need to be authenticated to access this page.</p>
-  //       </div>
-  //     </div>
-  //   );
-  // }
 
   const getDisplayName = () => {
-    if (user?.user_metadata?.first_name) {
-      return user.user_metadata.first_name;
-    }
-    if (user?.user_metadata?.full_name) {
-      return user.user_metadata.full_name.split(' ')[0];
-    }
-    if (user?.user_metadata?.name) {
-      return user.user_metadata.name.split(' ')[0];
-    }
-    return 'User';
-  };
-
-  const handleSignOut = async () => {
-    await signOut();
+    return 'Sachin';
   };
 
   const renderDashboard = () => (
@@ -95,33 +48,83 @@ export default function DashboardPage() {
           Welcome back, {getDisplayName()}
         </h1>
         <p>
-          <TypingAnimation text="Let's get started..." speed={30} />
+          <TypingAnimation text="Ready to recognize your colleagues?" speed={30} />
         </p>
       </div>
 
-      {/* Recommended Profiles */}
-      <div className="animate-slide-up">
-        <RecommendedProfiles />
+      {/* Quick Actions */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-slide-up">
+        <div className="p-6 border border-border/50 rounded-lg bg-card/50 backdrop-blur-sm hover:bg-card/70 transition-all duration-200">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+              <span className="text-primary text-lg">🎉</span>
+            </div>
+            <h3 className="text-lg font-semibold text-foreground">Send ShoutOut</h3>
+          </div>
+          <p className="text-sm text-muted-foreground mb-4">
+            Recognize a colleague for their great work
+          </p>
+          <button 
+            onClick={() => window.location.href = '/send-shoutout'}
+            className="w-full bg-primary text-primary-foreground py-2 px-4 rounded-md hover:bg-primary/90 transition-colors"
+          >
+            Send Recognition
+          </button>
+        </div>
+
+        <div className="p-6 border border-border/50 rounded-lg bg-card/50 backdrop-blur-sm hover:bg-card/70 transition-all duration-200">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center">
+              <span className="text-blue-500 text-lg">📊</span>
+            </div>
+            <h3 className="text-lg font-semibold text-foreground">View Analytics</h3>
+          </div>
+          <p className="text-sm text-muted-foreground mb-4">
+            See recognition trends and insights
+          </p>
+          <button 
+            onClick={() => window.location.href = '/analytics'}
+            className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-colors"
+          >
+            View Insights
+          </button>
+        </div>
+
+        <div className="p-6 border border-border/50 rounded-lg bg-card/50 backdrop-blur-sm hover:bg-card/70 transition-all duration-200">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center">
+              <span className="text-green-500 text-lg">👥</span>
+            </div>
+            <h3 className="text-lg font-semibold text-foreground">Team Feed</h3>
+          </div>
+          <p className="text-sm text-muted-foreground mb-4">
+            See recent team recognition activity
+          </p>
+          <button 
+            onClick={() => window.location.href = '/recognition-feed'}
+            className="w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition-colors"
+          >
+            View Feed
+          </button>
+        </div>
       </div>
 
-      {/* Notifications and Meetings */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="animate-slide-up" style={{ animationDelay: '0.1s' }}>
-          <NotificationsSection />
-        </div>
-        <div className="animate-slide-up" style={{ animationDelay: '0.2s' }}>
-          <UpcomingMeetings />
+      {/* Recent Activity */}
+      <div className="animate-slide-up" style={{ animationDelay: '0.1s' }}>
+        <h2 className="text-xl font-semibold text-foreground mb-6">Recent Recognition Activity</h2>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <NotificationsSection />
+          </div>
+          <div>
+            <UpcomingMeetings />
+          </div>
         </div>
       </div>
 
       {/* Search Bar */}
       <div className="pt-8 animate-slide-up" style={{ animationDelay: '0.3s' }}>
         <SearchBar />
-      </div>
-
-      {/* Database Status Check */}
-      <div className="pt-8 animate-slide-up" style={{ animationDelay: '0.4s' }}>
-        <DatabaseStatus />
       </div>
     </div>
   );
@@ -156,19 +159,7 @@ export default function DashboardPage() {
           </button>
         </div>
 
-        <div className="flex items-center justify-between py-3 p-4 rounded-lg border border-border/50 bg-card/50 backdrop-blur-sm hover:bg-card/70 transition-all duration-200">
-          <div>
-            <p className="text-sm font-medium text-foreground">Sign Out</p>
-            <p className="text-xs text-muted-foreground">End session</p>
-          </div>
-          <button 
-            onClick={handleSignOut}
-            className="text-sm text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 flex items-center gap-2 transition-colors"
-          >
-            <LogOut className="h-4 w-4" />
-            Sign Out
-          </button>
-        </div>
+
       </div>
     </div>
   );

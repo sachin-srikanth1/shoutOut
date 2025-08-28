@@ -1,56 +1,54 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { Calendar, Loader2 } from 'lucide-react';
-import { useAuth } from '@/contexts/auth-context';
-import { databaseService, Meeting } from '@/services/database-service';
+import { Calendar } from 'lucide-react';
 
 interface UpcomingMeetingsProps {
   className?: string;
 }
 
+// Mock data for recognition milestones
+const mockMilestones = [
+  {
+    id: '1',
+    title: 'Weekly Recognition Goal',
+    type: { slug: 'weekly_goal' },
+    start_time: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days from now
+    location: 'Team Meeting'
+  },
+  {
+    id: '2',
+    title: 'Monthly Recognition Review',
+    type: { slug: 'monthly_review' },
+    start_time: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // 1 week from now
+    location: 'Manager 1:1'
+  },
+  {
+    id: '3',
+    title: 'Quarterly Recognition Awards',
+    type: { slug: 'quarterly_awards' },
+    start_time: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 1 month from now
+    location: 'All-Hands Meeting'
+  },
+  {
+    id: '4',
+    title: 'Recognition Training Session',
+    type: { slug: 'training' },
+    start_time: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(), // 2 weeks from now
+    location: 'Training Room'
+  }
+];
+
 export default function UpcomingMeetings({ className = "" }: UpcomingMeetingsProps) {
-  const { user } = useAuth();
-  const [meetings, setMeetings] = useState<Meeting[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const loadUpcomingMeetings = async () => {
-      if (!user?.id) return;
-
-      try {
-        setLoading(true);
-        const response = await databaseService.getUpcomingMeetings(user.id, 5);
-        
-        if (response.success && response.data) {
-          setMeetings(response.data);
-        } else {
-          setError(response.error || 'Failed to load meetings');
-        }
-      } catch (err) {
-        console.error('Error loading upcoming meetings:', err);
-        setError('Failed to load meetings');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadUpcomingMeetings();
-  }, [user?.id]);
-
   const getMeetingColor = (typeSlug?: string) => {
     switch (typeSlug) {
-      case 'interview':
-        return 'bg-red-500';
-      case 'team_meeting':
+      case 'weekly_goal':
         return 'bg-green-500';
-      case 'client_call':
-        return 'bg-orange-500';
-      case 'one_on_one':
+      case 'monthly_review':
         return 'bg-blue-500';
-      case 'workshop':
+      case 'quarterly_awards':
         return 'bg-purple-500';
+      case 'training':
+        return 'bg-orange-500';
       default:
         return 'bg-muted-foreground';
     }
@@ -86,69 +84,27 @@ export default function UpcomingMeetings({ className = "" }: UpcomingMeetingsPro
     }
   };
 
-  if (loading) {
-    return (
-      <div className={`space-y-4 ${className}`}>
-        <div className="flex items-center gap-2">
-          <Calendar className="h-4 w-4 text-foreground" />
-          <h3 className="text-sm font-medium text-foreground">Upcoming Meetings</h3>
-        </div>
-        <div className="flex items-center justify-center py-8">
-          <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className={`space-y-4 ${className}`}>
-        <div className="flex items-center gap-2">
-          <Calendar className="h-4 w-4 text-foreground" />
-          <h3 className="text-sm font-medium text-foreground">Upcoming Meetings</h3>
-        </div>
-        <div className="text-center py-4">
-          <p className="text-sm text-muted-foreground">{error}</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (meetings.length === 0) {
-    return (
-      <div className={`space-y-4 ${className}`}>
-        <div className="flex items-center gap-2">
-          <Calendar className="h-4 w-4 text-foreground" />
-          <h3 className="text-sm font-medium text-foreground">Upcoming Meetings</h3>
-        </div>
-        <div className="text-center py-4">
-          <p className="text-sm text-muted-foreground">No upcoming meetings</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className={`space-y-4 ${className}`}>
       <div className="flex items-center gap-2">
         <Calendar className="h-4 w-4 text-foreground" />
-        <h3 className="text-sm font-medium text-foreground">Upcoming Meetings</h3>
+        <h3 className="text-sm font-medium text-foreground">Recognition Milestones</h3>
       </div>
       <div className="space-y-3">
-        {meetings.map((meeting) => (
+        {mockMilestones.map((milestone) => (
           <div 
-            key={meeting.id} 
+            key={milestone.id} 
             style={{ border: '1px solid rgba(168, 85, 247, 0.3)' }}
             className="flex items-center gap-3 p-3 rounded-lg bg-card/50 backdrop-blur-sm shadow-sm hover:shadow-md hover:border-purple-500 transition-all duration-200"
           >
-            <div className={`w-2 h-2 rounded-full ${getMeetingColor(meeting.type?.slug)} flex-shrink-0`}></div>
+            <div className={`w-2 h-2 rounded-full ${getMeetingColor(milestone.type?.slug)} flex-shrink-0`}></div>
             <div className="flex-1 min-w-0">
-              <span className="text-sm font-medium text-foreground">{meeting.title}</span>
-              {meeting.location && (
-                <p className="text-xs text-muted-foreground truncate">{meeting.location}</p>
+              <span className="text-sm font-medium text-foreground">{milestone.title}</span>
+              {milestone.location && (
+                <p className="text-xs text-muted-foreground truncate">{milestone.location}</p>
               )}
             </div>
-            <span className="text-xs text-muted-foreground flex-shrink-0">{formatMeetingTime(meeting.start_time)}</span>
+            <span className="text-xs text-muted-foreground flex-shrink-0">{formatMeetingTime(milestone.start_time)}</span>
           </div>
         ))}
       </div>

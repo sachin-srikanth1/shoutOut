@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useAuth } from '@/contexts/auth-context';
 import { useTheme } from '@/components/theme-provider';
 import { 
   Menu, 
@@ -10,11 +9,7 @@ import {
   Bell, 
   User, 
   Settings, 
-  LogOut,
-  ChevronDown,
-  Globe,
-  Moon,
-  Sun
+  ChevronDown
 } from 'lucide-react';
 
 interface HeaderProps {
@@ -22,28 +17,13 @@ interface HeaderProps {
 }
 
 export default function Header({ className = '' }: HeaderProps) {
-  const { user, signOut } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
 
   const getDisplayName = () => {
-    if (user?.user_metadata?.first_name) {
-      return user.user_metadata.first_name;
-    }
-    if (user?.user_metadata?.full_name) {
-      return user.user_metadata.full_name.split(' ')[0];
-    }
-    if (user?.user_metadata?.name) {
-      return user.user_metadata.name.split(' ')[0];
-    }
     return 'User';
-  };
-
-  const handleSignOut = async () => {
-    await signOut();
-    setIsUserMenuOpen(false);
   };
 
   return (
@@ -58,7 +38,7 @@ export default function Header({ className = '' }: HeaderProps) {
                 alt="Logo"
                 className="w-6 h-6 rounded object-cover"
               />
-              <span className="text-base font-semibold text-foreground">Netch.ai</span>
+              <span className="text-base font-semibold text-foreground">ShoutOut</span>
             </Link>
           </div>
 
@@ -91,25 +71,11 @@ export default function Header({ className = '' }: HeaderProps) {
                         <div className="flex items-start space-x-3">
                           <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0"></div>
                           <div className="flex-1 min-w-0">
-                            <p className="text-sm text-foreground group-hover:text-purple-600 transition-colors duration-200">Placeholder</p>
+                            <p className="text-sm text-foreground group-hover:text-purple-600 transition-colors duration-200">Welcome to Netch.ai!</p>
                             <p className="text-xs text-muted-foreground mt-1">Just now</p>
                           </div>
                         </div>
                       </div>
-                      <div className="p-4 border-b border-border/20 hover:bg-muted/20 transition-all duration-200 ease-out cursor-pointer group">
-                        <div className="flex items-start space-x-3">
-                          <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0"></div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm text-foreground group-hover:text-purple-600 transition-colors duration-200">Placeholder</p>
-                            <p className="text-xs text-muted-foreground mt-1">2 minutes ago</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="p-4 border-t border-border/30">
-                      <button className="w-full text-xs text-purple-600 hover:text-purple-700 font-medium transition-colors duration-200 hover:bg-purple-50 dark:hover:bg-purple-900/10 rounded-md py-2">
-                        View all notifications
-                      </button>
                     </div>
                   </div>
                 </>
@@ -141,7 +107,7 @@ export default function Header({ className = '' }: HeaderProps) {
                   <div className="absolute right-0 mt-2 w-48 bg-card border border-border/50 rounded-lg shadow-lg z-[10000]">
                     <div className="p-3 border-b border-border/50">
                       <p className="text-sm font-medium text-foreground">{getDisplayName()}</p>
-                      <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
+                      <p className="text-xs text-muted-foreground truncate">No user data available</p>
                     </div>
                     <div className="p-1">
                       <Link
@@ -160,13 +126,7 @@ export default function Header({ className = '' }: HeaderProps) {
                         <User className="h-4 w-4" />
                         <span>Profile</span>
                       </Link>
-                      <button
-                        onClick={handleSignOut}
-                        className="flex items-center space-x-2 w-full px-3 py-2 text-sm text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md transition-colors"
-                      >
-                        <LogOut className="h-4 w-4" />
-                        <span>Sign Out</span>
-                      </button>
+
                     </div>
                   </div>
                 </>

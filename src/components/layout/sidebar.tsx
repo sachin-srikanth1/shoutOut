@@ -5,12 +5,12 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { 
   LayoutDashboard, 
-  BarChart3, 
+  MessageSquare, 
   Settings,
   User,
-  ListChecks,
+  Send,
   CheckCircle,
-  Calendar
+  BarChart3
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -23,34 +23,34 @@ export default function Sidebar({ className = '' }: SidebarProps) {
 
   const navigation = [
     {
-      name: 'Home',
+      name: 'Dashboard',
       href: '/dashboard',
       icon: LayoutDashboard,
       description: 'Overview and metrics'
     },
     {
-      name: 'Recommended',
-      href: '/recommended',
+      name: 'Send ShoutOut',
+      href: '/send-shoutout',
+      icon: Send,
+      description: 'Recognize a colleague'
+    },
+    {
+      name: 'My ShoutOuts',
+      href: '/my-shoutouts',
+      icon: MessageSquare,
+      description: 'Sent and received'
+    },
+    {
+      name: 'Recognition Feed',
+      href: '/recognition-feed',
       icon: BarChart3,
-      description: 'Personalized suggestions'
+      description: 'Team recognition activity'
     },
     {
-      name: 'In-Progress',
-      href: '/in-progress',
-      icon: ListChecks,
-      description: 'Connections in progress'
-    },
-    {
-      name: 'Completed',
-      href: '/completed',
+      name: 'Analytics',
+      href: '/analytics',
       icon: CheckCircle,
-      description: 'Completed connections'
-    },
-    {
-      name: 'Calendar',
-      href: '/calendar',
-      icon: Calendar,
-      description: 'Upcoming meetings'
+      description: 'Recognition insights'
     },
     {
       name: 'Profile',
